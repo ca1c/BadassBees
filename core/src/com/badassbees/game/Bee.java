@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bee {
@@ -58,7 +59,10 @@ public class Bee {
         }
     }
 
-    public void updateSpeedForRotationAngle() {
+    // This is called update velocity
+    // because velocity implies a speed and direction
+    // since it is a vector (this function does both of these)
+    public void updateVelocity() {
         // Adjust X and Y speeds based on angle
 
         /*
@@ -72,57 +76,25 @@ public class Bee {
                   180
          */
 
-        // between 360 and 270 degrees
-        if(rotationAngle < 360 && rotationAngle > 270) {
-            float xNumerator = Math.abs(rotationAngle - 360);
-            float yNumerator = rotationAngle - 270;
-
-            float xSpeedMultiplier = xNumerator / 90;
-            float ySpeedMultiplier = yNumerator / 90;
-
-            xSpeed = topSpeed * xSpeedMultiplier;
-            ySpeed = topSpeed * ySpeedMultiplier;
+        float xSpeedMultiplier;
+        float ySpeedMultiplier;
+        if(rotationAngle < 360 && rotationAngle > 180) {
+            xSpeedMultiplier = Math.abs(MathUtils.sinDeg(rotationAngle));
         }
-        // between 270 and 180 degrees
-        else if(rotationAngle < 270 && rotationAngle > 180) {
-            float xNumerator = rotationAngle - 180;
-            float yNumerator = Math.abs(rotationAngle - 270);
-
-            float xSpeedMultiplier = xNumerator / 90;
-            float ySpeedMultiplier = -1 * (yNumerator / 90);
-
-            xSpeed = topSpeed * xSpeedMultiplier;
-            ySpeed = topSpeed * ySpeedMultiplier;
+        else{
+            xSpeedMultiplier = -1 * (MathUtils.sinDeg(rotationAngle));
         }
-        // between 180 and 90 degrees
-        else if(rotationAngle < 180 && rotationAngle > 90 ) {
-            float xNumerator = rotationAngle - 180;
-            float yNumerator = rotationAngle - 90;
+        ySpeedMultiplier = MathUtils.cosDeg(rotationAngle);
 
-            float xSpeedMultiplier = xNumerator / 90;
-            float ySpeedMultiplier = -1 * (yNumerator / 90);
 
-            xSpeed = topSpeed * xSpeedMultiplier;
-            ySpeed = topSpeed * ySpeedMultiplier;
-        }
-        // between 90 and 0 degrees (360)
-        // >= because it starts at 0
-        else if(rotationAngle < 90 && rotationAngle >= 0) {
-            float xNumerator = rotationAngle;
-            float yNumerator = Math.abs(rotationAngle - 90);
-
-            float xSpeedMultiplier = -1 * (xNumerator / 90);
-            float ySpeedMultiplier = yNumerator / 90;
-
-            xSpeed = topSpeed * xSpeedMultiplier;
-            ySpeed = topSpeed * ySpeedMultiplier;
-        }
+        xSpeed = topSpeed * xSpeedMultiplier;
+        ySpeed = topSpeed * ySpeedMultiplier;
     }
 
     public void Update(float deltaTime) {
         moveForward(deltaTime);
         updateRotationAngle(deltaTime);
-        updateSpeedForRotationAngle();
+        updateVelocity();
     }
 
     public void Draw(SpriteBatch batch) {
