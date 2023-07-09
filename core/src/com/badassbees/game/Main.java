@@ -8,19 +8,19 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	Player player;
+	Bee bee;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("bee.png");
-		player = new Player(img);
+		bee = new Bee(img);
 	}
 
 	@Override
 	public void render () {
 		ScreenUtils.clear(0, 0, 0, 1);
 		batch.begin();
-		player.Draw(batch);
+		bee.Draw(batch);
 		batch.end();
 	}
 	

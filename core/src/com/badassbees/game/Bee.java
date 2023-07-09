@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public class Player {
+public class Bee {
     public Vector2 position;
     public Sprite sprite;
     public float topSpeed = 500f;
@@ -15,19 +15,13 @@ public class Player {
     public float ySpeed = 500f;
     public float rotationSpeed = 500f;
     public float rotationAngle = 360f;
-    public Player(Texture img) {
+    public Bee(Texture img) {
         sprite = new Sprite(img);
         position = new Vector2(Gdx.graphics.getWidth()/2f,sprite.getScaleY()*sprite.getHeight()/2);
         sprite.setScale(2);
     }
 
-    public void Update(float deltaTime) {
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            position.x += deltaTime*xSpeed;
-            position.y += deltaTime*ySpeed;
-        }
-
-        // rotate the bee
+    public void updateRotationAngle() {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             rotationAngle += deltaTime*rotationSpeed;
             if(rotationAngle > 360) {
@@ -42,7 +36,9 @@ public class Player {
             }
             System.out.println(rotationAngle);
         }
+    }
 
+    public void updateSpeedForRotationAngle() {
         // Adjust X and Y speeds based on angle
 
         /*
@@ -101,6 +97,17 @@ public class Player {
             xSpeed = topSpeed * xSpeedMultiplier;
             ySpeed = topSpeed * ySpeedMultiplier;
         }
+    }
+
+    public void Update(float deltaTime) {
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+            position.x += deltaTime*xSpeed;
+            position.y += deltaTime*ySpeed;
+        }
+
+        // rotate the bee
+        updateRotationAngle();
+        updateSpeedForRotationAngle();
 
     }
 
