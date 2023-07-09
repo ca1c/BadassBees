@@ -21,7 +21,7 @@ public class Bee {
         sprite.setScale(2);
     }
 
-    public void updateRotationAngle() {
+    public void updateRotationAngle(float deltaTime) {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             rotationAngle += deltaTime*rotationSpeed;
             if(rotationAngle > 360) {
@@ -106,7 +106,7 @@ public class Bee {
         }
 
         // rotate the bee
-        updateRotationAngle();
+        updateRotationAngle(deltaTime);
         updateSpeedForRotationAngle();
 
     }
