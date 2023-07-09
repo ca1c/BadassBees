@@ -21,20 +21,40 @@ public class Bee {
         sprite.setScale(2);
     }
 
+    public void moveForward(float deltaTime) {
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+            position.x += deltaTime * xSpeed;
+            position.y += deltaTime * ySpeed;
+            // Check if bee is hitting side walls
+            if(position.x + sprite.getWidth() > Gdx.graphics.getWidth()) {
+                position.x -= sprite.getWidth();
+            }
+            if(position.x < 0) {
+                position.x += sprite.getWidth();
+            }
+            // Check if bee is hitting top and bottom walls
+            if(position.y + sprite.getHeight() > Gdx.graphics.getHeight()) {
+                position.y -= sprite.getHeight();
+            }
+            if(position.y < 0) {
+                position.y += sprite.getHeight();
+            }
+        }
+    }
+
+
     public void updateRotationAngle(float deltaTime) {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             rotationAngle += deltaTime*rotationSpeed;
             if(rotationAngle > 360) {
                 rotationAngle -= 360;
             }
-            System.out.println(rotationAngle);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             rotationAngle += 360 - deltaTime*rotationSpeed;
             if(rotationAngle > 360) {
                 rotationAngle -= 360;
             }
-            System.out.println(rotationAngle);
         }
     }
 
@@ -100,15 +120,9 @@ public class Bee {
     }
 
     public void Update(float deltaTime) {
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            position.x += deltaTime*xSpeed;
-            position.y += deltaTime*ySpeed;
-        }
-
-        // rotate the bee
+        moveForward(deltaTime);
         updateRotationAngle(deltaTime);
         updateSpeedForRotationAngle();
-
     }
 
     public void Draw(SpriteBatch batch) {
