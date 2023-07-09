@@ -22,7 +22,7 @@ public class Player {
     }
 
     public void Update(float deltaTime) {
-        if(Gdx.input.isKeyPressed(Input.Keys.W) && position.y < Gdx.graphics.getHeight() - sprite.getHeight()) {
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             position.x += deltaTime*xSpeed;
             position.y += deltaTime*ySpeed;
         }
