@@ -6,29 +6,34 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bee {
     public Vector2 position;
     public Sprite sprite;
-    public float topSpeed = 500f;
+    public float topSpeed = 300f;
     public float xSpeed = 0f;
     public float ySpeed = 500f;
     public float rotationSpeed = 200f;
     public float rotationAngle = 360f;
     public float moveAngle;
-    public enum Quadrant {
-        FIRST,
-        SECOND,
-        THIRD,
-        FOURTH;
-    }
-
-    public Bee(Texture img) {
+    public Rectangle flowerBoundingBox;
+    public boolean collided = false;
+    public Bee(Texture img, Rectangle flowerBox) {
         sprite = new Sprite(img);
         sprite.setScale(2);
         position = new Vector2(Gdx.graphics.getWidth()/2 - sprite.getWidth(),
                 Gdx.graphics.getHeight()/2 - sprite.getHeight());
+        flowerBoundingBox = new Rectangle(flowerBox.x, flowerBox.y, flowerBox.width, flowerBox.height);
+    }
+
+    public Rectangle getBoundingBox() {
+        return sprite.getBoundingRectangle();
+    }
+
+    public void updateCollided(boolean collidedBool) {
+        collided = collidedBool;
     }
 
     public boolean beeHittingRightWall() {
@@ -90,19 +95,18 @@ public class Bee {
     // gets the angle bee needs to be rotated to, to move to a certain coordinate
     public float getPathfindingRotationAngle(float x1, float y1, float x2, float y2) {
         float c = (y2 - y1) / (x2 - x1);
-        float divisor = getCoordinateQuadrantDivisor(x1, y1);
-        System.out.println(divisor);
-        float theta = divisor - MathUtils.atanDeg(c);
+        float subtractor = getCoordinateQuadrantDivisor(x1, y1);
+        float theta = subtractor - MathUtils.atanDeg(c);
 
         return theta;
     }
 
     public float targetAngle() {
-        return 360 - getPathfindingRotationAngle(100, 100, position.x, position.y);
+        return 360 - getPathfindingRotationAngle(100, 200, position.x, position.y);
     }
 
     public void moveForward(float deltaTime) {
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if(!collided) {
             moveAngle = targetAngle();
             updateBeeCoordinates(deltaTime);
             checkBeeHittingBorders();
@@ -167,9 +171,7 @@ public class Bee {
     public void Update(float deltaTime) {
 
         float myAngle = targetAngle();
-//        System.out.println(rotationAngle + " " + myAngle);
         if(rotationAngle > myAngle) {
-//            System.out.println(myAngle);
             rotateRight(deltaTime);
         }
         if(rotationAngle < myAngle) {

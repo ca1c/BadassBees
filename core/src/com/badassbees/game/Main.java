@@ -7,13 +7,17 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
+	Texture beeImg;
+	Texture flowerImg;
 	Bee bee;
+	Flower flower;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("bee.png");
-		bee = new Bee(img);
+		beeImg = new Texture("bee.png");
+		flowerImg = new Texture("flower.png");
+		flower = new Flower(flowerImg);
+		bee = new Bee(beeImg, flower.getBoundingBox());
 	}
 
 	@Override
@@ -21,12 +25,19 @@ public class Main extends ApplicationAdapter {
 		ScreenUtils.clear(0, 0, 0, 1);
 		batch.begin();
 		bee.Draw(batch);
+		flower.Draw(batch);
+
+		if(flower.getBoundingBox().overlaps(bee.getBoundingBox())) {
+			bee.updateCollided(true);
+		}
+
 		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+		beeImg.dispose();
+		flowerImg.dispose();
 	}
 }
