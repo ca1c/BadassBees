@@ -74,7 +74,7 @@ public class Bee {
     }
 
     // gets quadrant of coordinate
-    public float getCoordinateQuadrantDivisor(float x, float y) {
+    public float getCoordinateQuadrantSubtractor(float x, float y) {
         float yAxis = Gdx.graphics.getWidth() / 2;
         float xAxis = Gdx.graphics.getHeight() / 2;
 
@@ -95,7 +95,7 @@ public class Bee {
     // gets the angle bee needs to be rotated to, to move to a certain coordinate
     public float getPathfindingRotationAngle(float x1, float y1, float x2, float y2) {
         float c = (y2 - y1) / (x2 - x1);
-        float subtractor = getCoordinateQuadrantDivisor(x1, y1);
+        float subtractor = getCoordinateQuadrantSubtractor(x1, y1);
         float theta = subtractor - MathUtils.atanDeg(c);
 
         return theta;
@@ -128,11 +128,12 @@ public class Bee {
     }
 
     public void updateRotationAngle(float deltaTime) {
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            rotateLeft(deltaTime);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        float myAngle = targetAngle();
+        if(rotationAngle > myAngle) {
             rotateRight(deltaTime);
+        }
+        if(rotationAngle < myAngle) {
+            rotateLeft(deltaTime);
         }
     }
 
@@ -169,15 +170,6 @@ public class Bee {
     }
 
     public void Update(float deltaTime) {
-
-        float myAngle = targetAngle();
-        if(rotationAngle > myAngle) {
-            rotateRight(deltaTime);
-        }
-        if(rotationAngle < myAngle) {
-            rotateLeft(deltaTime);
-        }
-
         moveForward(deltaTime);
         updateRotationAngle(deltaTime);
         updateVelocity();
