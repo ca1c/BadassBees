@@ -17,7 +17,7 @@ public class Main extends ApplicationAdapter {
 		beeImg = new Texture("bee.png");
 		flowerImg = new Texture("flower.png");
 		flower = new Flower(flowerImg);
-		bee = new Bee(beeImg, flower.getBoundingBox());
+		bee = new Bee(beeImg, flower.getPosition());
 	}
 
 	@Override

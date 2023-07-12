@@ -18,14 +18,14 @@ public class Bee {
     public float rotationSpeed = 200f;
     public float rotationAngle = 360f;
     public float moveAngle;
-    public Rectangle flowerBoundingBox;
+    public Vector2 flowerPosition;
     public boolean collided = false;
-    public Bee(Texture img, Rectangle flowerBox) {
+    public Bee(Texture img, Vector2 flowerVector) {
         sprite = new Sprite(img);
         sprite.setScale(2);
         position = new Vector2(Gdx.graphics.getWidth()/2 - sprite.getWidth(),
                 Gdx.graphics.getHeight()/2 - sprite.getHeight());
-        flowerBoundingBox = new Rectangle(flowerBox.x, flowerBox.y, flowerBox.width, flowerBox.height);
+        flowerPosition = flowerVector;
     }
 
     public Rectangle getBoundingBox() {
@@ -102,7 +102,7 @@ public class Bee {
     }
 
     public float targetAngle() {
-        return 360 - getPathfindingRotationAngle(100, 200, position.x, position.y);
+        return 360 - getPathfindingRotationAngle(flowerPosition.x, flowerPosition.y, position.x, position.y);
     }
 
     public void moveForward(float deltaTime) {

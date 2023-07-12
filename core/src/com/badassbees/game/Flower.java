@@ -22,6 +22,10 @@ public class Flower {
         return sprite.getBoundingRectangle();
     }
 
+    public Vector2 getPosition() {
+        return position;
+    }
+
     public void Update(float deltaTime) {
 
     }
