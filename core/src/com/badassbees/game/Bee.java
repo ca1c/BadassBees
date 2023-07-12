@@ -1,7 +1,6 @@
 package com.badassbees.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,11 +19,12 @@ public class Bee {
     public float moveAngle;
     public Vector2 flowerPosition;
     public boolean collided = false;
+    
     public Bee(Texture img, Vector2 flowerVector) {
         sprite = new Sprite(img);
         sprite.setScale(2);
-        position = new Vector2(Gdx.graphics.getWidth()/2 - sprite.getWidth(),
-                Gdx.graphics.getHeight()/2 - sprite.getHeight());
+        position = new Vector2(Gdx.graphics.getWidth()/2f - sprite.getWidth(),
+                Gdx.graphics.getHeight()/2f - sprite.getHeight());
         flowerPosition = flowerVector;
     }
 
@@ -75,8 +75,8 @@ public class Bee {
 
     // gets quadrant of coordinate
     public float getCoordinateQuadrantMinuend(float x, float y) {
-        float yAxis = Gdx.graphics.getWidth() / 2;
-        float xAxis = Gdx.graphics.getHeight() / 2;
+        float yAxis = Gdx.graphics.getWidth() / 2f;
+        float xAxis = Gdx.graphics.getHeight() / 2f;
 
         if(x > yAxis && y > xAxis) {
             return 90f;
@@ -96,9 +96,8 @@ public class Bee {
     public float getPathfindingRotationAngle(float x1, float y1, float x2, float y2) {
         float c = (y2 - y1) / (x2 - x1);
         float minuend = getCoordinateQuadrantMinuend(x1, y1);
-        float theta = minuend - MathUtils.atanDeg(c);
 
-        return theta;
+        return minuend - MathUtils.atanDeg(c);
     }
 
     public float targetAngle() {
@@ -174,7 +173,7 @@ public class Bee {
         updateRotationAngle(deltaTime);
         updateVelocity();
     }
-    int runs = 0;
+
     public void Draw(SpriteBatch batch) {
         Update(Gdx.graphics.getDeltaTime());
         sprite.setPosition(position.x, position.y);
