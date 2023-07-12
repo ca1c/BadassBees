@@ -74,7 +74,7 @@ public class Bee {
     }
 
     // gets quadrant of coordinate
-    public float getCoordinateQuadrantSubtractor(float x, float y) {
+    public float getCoordinateQuadrantMinuend(float x, float y) {
         float yAxis = Gdx.graphics.getWidth() / 2;
         float xAxis = Gdx.graphics.getHeight() / 2;
 
@@ -95,8 +95,8 @@ public class Bee {
     // gets the angle bee needs to be rotated to, to move to a certain coordinate
     public float getPathfindingRotationAngle(float x1, float y1, float x2, float y2) {
         float c = (y2 - y1) / (x2 - x1);
-        float subtractor = getCoordinateQuadrantSubtractor(x1, y1);
-        float theta = subtractor - MathUtils.atanDeg(c);
+        float minuend = getCoordinateQuadrantMinuend(x1, y1);
+        float theta = minuend - MathUtils.atanDeg(c);
 
         return theta;
     }
