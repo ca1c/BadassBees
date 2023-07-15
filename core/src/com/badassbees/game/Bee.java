@@ -11,15 +11,16 @@ import com.badlogic.gdx.math.Vector2;
 public class Bee {
     public Vector2 position;
     public Sprite sprite;
-    public float topSpeed = 300f;
+    public float topSpeed = 200f;
     public float xSpeed = 0f;
     public float ySpeed = 500f;
-    public float rotationSpeed = 200f;
+    public float rotationSpeed = 300f;
     public float rotationAngle = 360f;
     public float moveAngle;
     public Vector2 flowerPosition;
     public boolean collided = false;
-    
+    float myAngle = 0;
+
     public Bee(Texture img, Vector2 flowerVector) {
         sprite = new Sprite(img);
         sprite.setScale(2);
@@ -94,14 +95,11 @@ public class Bee {
 
     // gets the angle bee needs to be rotated to, to move to a certain coordinate
     public float getPathfindingRotationAngle(float x1, float y1, float x2, float y2) {
-        float c = (y2 - y1) / (x2 - x1);
-        float minuend = getCoordinateQuadrantMinuend(x1, y1);
-
-        return minuend - MathUtils.atanDeg(c);
+        return MathUtils.atan2Deg((y2 - y1), (x2 - x1));
     }
 
     public float targetAngle() {
-        return 360 - getPathfindingRotationAngle(flowerPosition.x, flowerPosition.y, position.x, position.y);
+        return getPathfindingRotationAngle(flowerPosition.x, flowerPosition.y, position.x, position.y);
     }
 
     public void moveForward(float deltaTime) {
@@ -127,12 +125,14 @@ public class Bee {
     }
 
     public void updateRotationAngle(float deltaTime) {
-        float myAngle = targetAngle();
-        if(rotationAngle > myAngle) {
-            rotateRight(deltaTime);
-        }
-        if(rotationAngle < myAngle) {
-            rotateLeft(deltaTime);
+        myAngle = targetAngle() + 90;
+
+        if(Math.abs(myAngle - rotationAngle) > 3 && !collided) {
+            if (((myAngle - rotationAngle) % 360 + 360 + 179) % 360 - 179 < 0) {
+                rotateRight(deltaTime);
+            } else {
+                rotateLeft(deltaTime);
+            }
         }
     }
 

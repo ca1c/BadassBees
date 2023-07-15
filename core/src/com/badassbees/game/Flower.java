@@ -14,8 +14,8 @@ public class Flower {
     public Flower(Texture img) {
         sprite = new Sprite(img);
         sprite.setScale(2);
-        position = new Vector2(100f,
-                200f);
+        position = new Vector2(400f,
+                50f);
     }
 
     public Rectangle getBoundingBox() {
@@ -23,7 +23,7 @@ public class Flower {
     }
 
     public Vector2 getPosition() {
-        return position;
+return position;
     }
 
     public void Update(float deltaTime) {
