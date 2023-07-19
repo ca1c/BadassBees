@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import java.lang.reflect.Array;
+
 public class Bee {
     public Vector2 position;
     public Sprite sprite;
@@ -92,6 +94,23 @@ public class Bee {
         if(rotationAngle > 360) {
             rotationAngle -= 360;
         }
+    }
+
+    public Vector2 findClosestFlower(Vector2[] flowerPositions) {
+        int minIndex = -1;
+        double minDistance = Double.POSITIVE_INFINITY;
+        for(int i = 0; i < flowerPositions.length; i++) {
+            Vector2 iPosition = flowerPositions[i];
+
+            double distance = Math.sqrt(Math.pow(iPosition.x - position.x, 2) + Math.pow(iPosition.y - position.y, 2));
+
+            if (distance < minDistance){
+                minIndex = i;
+                minDistance = distance;
+            }
+        }
+
+        return flowerPositions[minIndex];
     }
 
     // gets the angle bee needs to be rotated to, to move to a certain coordinate
