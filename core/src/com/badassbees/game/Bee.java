@@ -16,7 +16,6 @@ public class Bee {
     public float ySpeed = 500f;
     public float rotationSpeed = 300f;
     public float rotationAngle = 360f;
-    public float moveAngle;
     public Vector2 flowerPosition;
     public boolean collided = false;
     float myAngle = 0;
@@ -74,37 +73,8 @@ public class Bee {
         }
     }
 
-    // gets quadrant of coordinate
-    public float getCoordinateQuadrantMinuend(float x, float y) {
-        float yAxis = Gdx.graphics.getWidth() / 2f;
-        float xAxis = Gdx.graphics.getHeight() / 2f;
-
-        if(x > yAxis && y > xAxis) {
-            return 90f;
-        }
-        else if(x > yAxis && y < xAxis) {
-            return 180f;
-        }
-        else if(x < yAxis && y < xAxis) {
-            return 270f;
-        }
-        else {
-            return 360f;
-        }
-    }
-
-    // gets the angle bee needs to be rotated to, to move to a certain coordinate
-    public float getPathfindingRotationAngle(float x1, float y1, float x2, float y2) {
-        return MathUtils.atan2Deg((y2 - y1), (x2 - x1));
-    }
-
-    public float targetAngle() {
-        return getPathfindingRotationAngle(flowerPosition.x, flowerPosition.y, position.x, position.y);
-    }
-
     public void moveForward(float deltaTime) {
         if(!collided) {
-            moveAngle = targetAngle();
             updateBeeCoordinates(deltaTime);
             checkBeeHittingBorders();
         }
@@ -122,6 +92,15 @@ public class Bee {
         if(rotationAngle > 360) {
             rotationAngle -= 360;
         }
+    }
+
+    // gets the angle bee needs to be rotated to, to move to a certain coordinate
+    public float getPathfindingRotationAngle(float x1, float y1, float x2, float y2) {
+        return MathUtils.atan2Deg((y2 - y1), (x2 - x1));
+    }
+
+    public float targetAngle() {
+        return getPathfindingRotationAngle(flowerPosition.x, flowerPosition.y, position.x, position.y);
     }
 
     public void updateRotationAngle(float deltaTime) {
